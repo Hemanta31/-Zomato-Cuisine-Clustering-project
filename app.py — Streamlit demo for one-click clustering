@@ -1,0 +1,27 @@
+app.py — Streamlit demo for one-click clustering
+# src/app.py
+import streamlit as st
+import pickle
+import numpy as np
+from scipy import sparse
+
+@st.cache(allow_output_mutation=True)
+def load_artifacts(path="model.pkl"):
+    return pickle.load(open(path, "rb"))
+
+st.title("Zomato Cuisine Clustering Demo 🍽️")
+artifacts = load_artifacts()
+kmeans = artifacts["kmeans"]
+tfidf = artifacts["tfidf"]
+scaler = artifacts["scaler"]
+
+review_text = st.text_area("Enter review text:")
+rating = st.slider("Rating (1–5)", 1.0, 5.0, 3.0)
+
+if st.button("Assign Cluster"):
+    X_text = tfidf.transform([review_text])
+    X_rating = scaler.transform([[rating]])
+    X = np.hstack([X_text.toarray(), X_rating])
+    
+    cluster_label = kmeans.predict(X)[0]
+    st.success(f"✅ Assigned to cluster **{cluster_label}**")
