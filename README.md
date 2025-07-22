@@ -1,10 +1,7 @@
 # -Zomato-Cuisine-Clustering-project
-
 ## 🔍 Overview
 Use unsupervised learning to cluster reviews & ratings—reveals cuisine affinity patterns.
 
-## 🔧 Setup
-```bash
 What Is the Zomato Cuisine Clustering Project?
 This project uses unsupervised machine learning (K-Means clustering) to analyze restaurant reviews and ratings from platforms like Zomato.
 
