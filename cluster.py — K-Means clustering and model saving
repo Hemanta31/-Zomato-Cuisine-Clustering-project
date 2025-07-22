@@ -1,0 +1,24 @@
+ cluster.py — K-Means clustering and model saving
+# src/cluster.py
+import pickle
+from sklearn.cluster import KMeans
+from preprocess import load_data, extract_features
+
+def train_clusters(n_clusters=10, data_path="data/zomato_reviews.csv"):
+    df = load_data(data_path)
+    X, tfidf, scaler = extract_features(df)
+    
+    kmeans = KMeans(n_clusters=n_clusters, random_state=42)
+    labels = kmeans.fit_predict(X)
+    
+    df["cluster"] = labels
+    return kmeans, tfidf, scaler, df
+
+def save_model(kmeans, tfidf, scaler, model_path="model.pkl"):
+    with open(model_path, "wb") as f:
+        pickle.dump({"kmeans": kmeans, "tfidf": tfidf, "scaler": scaler}, f)
+
+if __name__ == "__main__":
+    model, tfidf, scaler, df = train_clusters(n_clusters=8)
+    save_model(model, tfidf, scaler)
+    print("📦 Model trained and saved as model.pkl")
